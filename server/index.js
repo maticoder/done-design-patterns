@@ -1,0 +1,27 @@
+const express = require("express");
+const app = express();
+const dotenv = require("dotenv");
+
+// import databse connect
+const connect = require("./util/connect");
+
+// configure dotenv
+dotenv.config("./config");
+
+const PORT = process.env.PORT || 7000;
+
+// use post data
+app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// import routes
+const userRoute = require("./routes/userRoute");
+
+// use routes
+app.use("/api/user", userRoute); // user routes
+
+app.listen(PORT, () => {
+    console.log(`🚀 server up and runnign at port ${PORT}`);
+
+    connect().then(async () => {});
+});
