@@ -1,3 +1,7 @@
+#login {
+  overflow: hidden;
+}
+
 #login .login {
   display: -webkit-box;
   display: -ms-flexbox;

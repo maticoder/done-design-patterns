@@ -41,3 +41,26 @@ module.exports.validateSignupData = (data) => {
         valid: Object.keys(errors).length === 0 ? true : false,
     };
 };
+
+module.exports.validateSigninData = (data) => {
+    // email password
+    let errors = {};
+
+    // validate email
+    if (!data.email || isEmpty(data.email)) {
+        errors.email = "Must not be empty";
+    } else if (!isEmail(data.email)) {
+        errors.email = "Must be a valid email";
+    }
+
+    // validate password
+    if (!data.password || isEmpty(data.password)) {
+        errors.password = "Must not be empty";
+    }
+
+    // return errors and valid
+    return {
+        errors,
+        valid: Object.keys(errors).length === 0 ? true : false,
+    };
+};

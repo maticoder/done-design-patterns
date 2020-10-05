@@ -1,5 +1,9 @@
 @import "../../util/colors";
 
+#login {
+    overflow: hidden;
+}
+
 #login .login {
     display: flex;
     flex-direction: column-reverse;

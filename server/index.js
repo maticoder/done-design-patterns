@@ -16,9 +16,11 @@ app.use(express.json());
 
 // import routes
 const userRoute = require("./routes/userRoute");
+const taskRoute = require("./routes/taskRoute");
 
 // use routes
 app.use("/api/user", userRoute); // user routes
+app.use("/api/task", taskRoute); // task routes
 
 app.listen(PORT, () => {
     console.log(`🚀 server up and runnign at port ${PORT}`);
