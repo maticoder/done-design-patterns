@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 // import databse connect
 const connect = require("./util/connect");
@@ -13,6 +14,9 @@ const PORT = process.env.PORT || 7000;
 // use post data
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
+
+// set up cors policy
+app.use(cors());
 
 // import routes
 const userRoute = require("./routes/userRoute");

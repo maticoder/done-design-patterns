@@ -93,15 +93,50 @@
           box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05);
 }
 
+#register .register .top .content form .input input.input-error {
+  -webkit-transition: none;
+  transition: none;
+  border: 1px solid #f44336;
+}
+
 #register .register .top .content form .input input:focus {
   border-color: #FC569A;
 }
 
+#register .register .top .content form .input input:focus.input-error {
+  border-color: #f44336;
+}
+
 #register .register .top .content form .input label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-weight: 300;
   margin-bottom: 0.2rem;
   color: rgba(0, 0, 0, 0.5);
   font-size: 0.95rem;
+}
+
+#register .register .top .content form .input label span.label-error {
+  color: #f44336;
+}
+
+#register .register .top .content form .input .error {
+  margin: 0;
+  font-size: 12.5px;
+  display: inline-block;
+  color: #f44336;
+  line-height: 100%;
 }
 
 #register .register .top .content form .check {
@@ -170,6 +205,9 @@
     font-size: 1rem;
     margin-bottom: 0.3rem;
   }
+  #register .register .top .content form .input .error {
+    font-size: 13px;
+  }
   #register .register .top .content form button {
     font-size: 0.95rem;
   }
@@ -197,6 +235,9 @@
   #register .register .top .content form .input label {
     font-size: 1.1rem;
     margin-bottom: 0.4rem;
+  }
+  #register .register .top .content form .input .error {
+    font-size: 14px;
   }
   #register .register .top .content form button {
     font-size: 1rem;
@@ -239,6 +280,9 @@
   #register .register .top .content form .input label {
     font-size: 0.85rem;
     margin-bottom: 0.2rem;
+  }
+  #register .register .top .content form .input .error {
+    font-size: 12px;
   }
   #register .register .top .content form button {
     font-size: 0.8rem;
@@ -291,6 +335,9 @@
   }
   #register .register .top .content form .input label {
     font-size: 0.95rem;
+  }
+  #register .register .top .content form .input .error {
+    font-size: 12.5px;
   }
   #register .register .top .content form button {
     font-size: 0.85rem;
@@ -364,6 +411,9 @@
   #register .register .top .content form .input label {
     font-size: 1rem;
     margin-bottom: 0.3rem;
+  }
+  #register .register .top .content form .input .error {
+    font-size: 13px;
   }
   #register .register .top .content form button {
     font-size: 0.95rem;
@@ -444,6 +494,10 @@
   #register .register .top .content form .input label {
     font-size: 1.1rem;
     margin-bottom: 0.4rem;
+  }
+  #register .register .top .content form .input .error {
+    font-size: 14px;
+    margin-top: 6px;
   }
   #register .register .top .content form button {
     font-size: 1rem;
