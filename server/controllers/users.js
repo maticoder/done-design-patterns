@@ -45,7 +45,7 @@ module.exports.signup = async (req, res) => {
         // if the user exists return error
         if (user) {
             return res.status(400).json({
-                general: "User with given credentials exists",
+                username: "User exists",
             });
         }
 
@@ -73,7 +73,7 @@ module.exports.signup = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            general: "something went wrong",
+            general: "Something went wrong",
         });
     }
 };

@@ -2,14 +2,14 @@ import React from "react";
 
 // react router imports
 import {
-    BrowserRouter as Router,
+    // BrowserRouter as Router,
     Switch,
     Route,
     useLocation,
 } from "react-router-dom";
 
 // import framer presence to page transition
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 // mui imports
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";

@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 7000;
 
 // use post data
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // set up cors policy
 app.use(cors());

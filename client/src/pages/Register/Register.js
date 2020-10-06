@@ -35,7 +35,7 @@ function Register() {
         // make axios request
         try {
             const response = await axios.post(
-                "localhost:7000/api/user/signup",
+                "http://192.168.1.221:7000/api/user/signup",
                 {
                     username,
                     email,
@@ -50,7 +50,8 @@ function Register() {
             console.log(response);
         } catch (err) {
             setLoading(false);
-            console.log(err);
+            setErrors(err.response.data);
+            console.log(err.response);
         }
     };
 
