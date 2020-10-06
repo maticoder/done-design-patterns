@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { motion } from "framer-motion";
 
 import { Link } from "react-router-dom";
+
+// import axios
+import axios from "axios";
 
 import { ReactComponent as LoginImage } from "../../images/login.svg";
 
@@ -30,6 +34,38 @@ const ColorButton = withStyles((theme) => ({
 }))(Button);
 
 function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // set loading
+        setLoading(true);
+
+        try {
+            const response = await axios.post(
+                "http://192.168.1.221:7000/api/user/signin",
+                {
+                    email,
+                    password,
+                },
+                {
+                    headers: {},
+                }
+            );
+            setLoading(false);
+            setErrors({});
+
+            // save token and redirect
+        } catch (err) {
+            setLoading(false);
+            setErrors(err.response.data);
+        }
+    };
+
     return (
         <div id="login">
             <motion.div
@@ -55,26 +91,79 @@ function Login() {
                             <p>OR</p>
                             <div className="line"></div>
                         </div>
-                        <form action="">
+                        <form onSubmit={handleSubmit}>
                             <div className="input">
-                                <label htmlFor="">Email</label>
-                                <input type="text" />
+                                <label htmlFor="">
+                                    <span
+                                        className={
+                                            errors.email && "label-error"
+                                        }
+                                    >
+                                        Email
+                                    </span>
+                                    {errors.email && (
+                                        <span className="error">
+                                            {errors.email}
+                                        </span>
+                                    )}
+                                </label>
+                                <input
+                                    className={errors.email && "input-error"}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="email"
+                                />
                             </div>
                             <div className="input">
-                                <label htmlFor="">Password</label>
-                                <input type="text" />
+                                <label htmlFor="">
+                                    <span
+                                        className={
+                                            errors.password && "label-error"
+                                        }
+                                    >
+                                        Password
+                                    </span>
+                                    {errors.password && (
+                                        <span className="error">
+                                            {errors.password}
+                                        </span>
+                                    )}
+                                </label>
+                                <input
+                                    className={errors.password && "input-error"}
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    type="password"
+                                />
                             </div>
                             <div className="input forgot">
                                 <p>
-                                    Forgot password? <Link>Click here</Link>
+                                    Forgot password?{" "}
+                                    <Link to="/forgot">Click here</Link>
                                 </p>
                             </div>
                             <Button
                                 variant="contained"
                                 color="primary"
+                                type="submit"
                                 fullWidth
+                                disabled={loading}
                             >
-                                Sign in
+                                {!loading ? (
+                                    "Sign in"
+                                ) : (
+                                    <React.Fragment>
+                                        <span style={{ visibility: "hidden" }}>
+                                            I
+                                        </span>
+                                        <CircularProgress
+                                            color="inherit"
+                                            size={22}
+                                        />
+                                    </React.Fragment>
+                                )}
                             </Button>
                         </form>
                         <p className="account">

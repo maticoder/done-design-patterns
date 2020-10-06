@@ -108,7 +108,7 @@ module.exports.signin = async (req, res) => {
         // if the user with given email doesn't exist return error
         if (!user) {
             return res.status(400).json({
-                general: "User with given email does not exist",
+                email: "User does not exist",
             });
         }
 
@@ -121,7 +121,7 @@ module.exports.signin = async (req, res) => {
         // if passwords is invalid return error
         if (!validPasswods) {
             return res.status(400).json({
-                general: "Password is not correct",
+                password: "Password is not correct",
             });
         }
 

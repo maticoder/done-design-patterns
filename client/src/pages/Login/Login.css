@@ -129,15 +129,49 @@
           box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05);
 }
 
+#login .login .top .content form .input input.input-error {
+  -webkit-transition: none;
+  transition: none;
+  border: 1px solid #f44336;
+}
+
 #login .login .top .content form .input input:focus {
   border-color: #FC569A;
 }
 
+#login .login .top .content form .input input:focus.input-error {
+  border-color: #f44336;
+}
+
 #login .login .top .content form .input label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-weight: 300;
   margin-bottom: 0.2rem;
   color: rgba(0, 0, 0, 0.5);
   font-size: 0.95rem;
+}
+
+#login .login .top .content form .input label span.label-error {
+  color: #f44336;
+}
+
+#login .login .top .content form .input .error {
+  margin: 0;
+  font-size: 12.5px;
+  display: inline-block;
+  color: #f44336;
 }
 
 #login .login .top .content form .forgot p {
@@ -183,6 +217,9 @@
     font-size: 1rem;
     margin-bottom: 0.3rem;
   }
+  #login .login .top .content form .input .error {
+    font-size: 13px;
+  }
   #login .login .bottom .img-container {
     max-width: 22rem;
   }
@@ -207,6 +244,9 @@
   #login .login .top .content form .input label {
     font-size: 1.1rem;
     margin-bottom: 0.4rem;
+  }
+  #login .login .top .content form .input .error {
+    font-size: 14px;
   }
 }
 
@@ -246,6 +286,9 @@
   #login .login .top .content form .input label {
     font-size: 0.85rem;
     margin-bottom: 0.2rem;
+  }
+  #login .login .top .content form .input .error {
+    font-size: 12px;
   }
   #login .login .top .content .account {
     margin: 1rem 0;
@@ -293,6 +336,9 @@
   }
   #login .login .top .content form .input label {
     font-size: 0.95rem;
+  }
+  #login .login .top .content form .input .error {
+    font-size: 12.5px;
   }
   #login .login .bottom .img-container {
     width: 100%;
@@ -346,6 +392,9 @@
   #login .login .top .content form .input label {
     font-size: 1rem;
     margin-bottom: 0.3rem;
+  }
+  #login .login .top .content form .input .error {
+    font-size: 13px;
   }
   #login .login .bottom .img-container {
     max-width: 29rem;
@@ -419,6 +468,9 @@
   #login .login .top .content form .input label {
     font-size: 1.1rem;
     margin-bottom: 0.4rem;
+  }
+  #login .login .top .content form .input .error {
+    font-size: 14px;
   }
   #login .login .top .content .account {
     margin: 1.4rem 0;
