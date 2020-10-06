@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { motion } from "framer-motion";
 
@@ -47,11 +48,11 @@ function Register() {
                 }
             );
             setLoading(false);
-            console.log(response);
+            setErrors({});
+            // save token in state
         } catch (err) {
             setLoading(false);
             setErrors(err.response.data);
-            console.log(err.response);
         }
     };
 
@@ -184,8 +185,21 @@ function Register() {
                                 color="primary"
                                 type="submit"
                                 fullWidth
+                                disabled={loading}
                             >
-                                Start now
+                                {!loading ? (
+                                    "Start now"
+                                ) : (
+                                    <React.Fragment>
+                                        <span style={{ visibility: "hidden" }}>
+                                            I
+                                        </span>
+                                        <CircularProgress
+                                            color="inherit"
+                                            size={22}
+                                        />
+                                    </React.Fragment>
+                                )}
                             </Button>
                         </form>
                         <p className="account">

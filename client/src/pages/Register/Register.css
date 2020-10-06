@@ -136,7 +136,6 @@
   font-size: 12.5px;
   display: inline-block;
   color: #f44336;
-  line-height: 100%;
 }
 
 #register .register .top .content form .check {
@@ -497,7 +496,6 @@
   }
   #register .register .top .content form .input .error {
     font-size: 14px;
-    margin-top: 6px;
   }
   #register .register .top .content form button {
     font-size: 1rem;
