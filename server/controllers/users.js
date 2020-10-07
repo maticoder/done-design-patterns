@@ -5,6 +5,7 @@ const {
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const Data = require("../models/Data");
 
 // register
 module.exports.signup = async (req, res) => {
@@ -57,6 +58,11 @@ module.exports.signup = async (req, res) => {
             username: newUser.username,
             email: newUser.email,
             password: hashedPassword,
+        });
+
+        // create data for user
+        const data = await Data.create({
+            user: user._id,
         });
 
         // sign in the user and return the token
