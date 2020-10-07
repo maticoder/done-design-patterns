@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-const { todoSchema } = require("./Todo");
 
 const projectSchema = new mongoose.Schema({
     icon: {
         type: String,
         required: true,
-        maxlength: 1,
     },
     name: {
         type: String,
@@ -13,11 +11,13 @@ const projectSchema = new mongoose.Schema({
         maxlength: 20,
         unique: true,
     },
-    todos: {
-        type: [todoSchema],
-        default: [],
-    },
+    todos: [
+        {
+            data: Date,
+            time: Date,
+            task: String,
+        },
+    ],
 });
 
-module.exports.projectSchema = projectSchema;
 module.exports = mongoose.model("Project", projectSchema);

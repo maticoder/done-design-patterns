@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { projectSchema } = require("./Project");
 
 const dataSchema = new mongoose.Schema({
     user: {
@@ -8,10 +7,12 @@ const dataSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    projects: {
-        type: [projectSchema],
-        default: [],
-    },
+    projects: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Project",
+        },
+    ],
 });
 
 module.exports = mongoose.model("Data", dataSchema);
