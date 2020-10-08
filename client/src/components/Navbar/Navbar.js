@@ -42,11 +42,7 @@ function Navbar(props) {
     return (
         <motion.header
             initial={{ y: -100 }}
-            animate={
-                props.user.authenticated && !props.user.username
-                    ? { y: -100 }
-                    : { y: 0 }
-            }
+            animate={props.user.authenticated ? { y: -100 } : { y: 0 }}
             exit={{ y: -100 }}
             transition={{ duration: 1 }}
         >

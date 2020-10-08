@@ -7,6 +7,8 @@ import { setUser, logoutUser } from "../../redux/actions/userActions";
 
 import { motion } from "framer-motion";
 
+import Navbar from "../../components/Navbar/Navbar";
+
 // loading component
 import Loading from "../../components/Loading/Loading";
 
@@ -15,6 +17,10 @@ import MaterialTable from "material-table";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -103,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
     },
     drawerContainer: {
         overflow: "auto",
-        marginTop: "64px",
+        marginTop: "70px",
     },
     content: {
         flexGrow: 1,
@@ -403,45 +409,53 @@ function Dashboard(props) {
 
     return (
         <motion.div
-            initial={{ x: 50 }}
+            initial={{ x: 0 }}
             animate={{ x: 0 }}
-            exit={{ x: 50 }}
+            exit={{ x: 0 }}
             className="dashboard"
         >
             {loading ? (
                 <Loading />
             ) : (
-                <div className={classes.root}>
-                    {/* <CssBaseline /> */}
-                    {/* <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Clipped drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar> */}
-                    <Drawer
-                        className={classes.drawer}
-                        variant="permanent"
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                    >
-                        {/* <Toolbar /> */}
-                        <div className={classes.drawerContainer}>
-                            <List>
-                                {data.map((proj, index) => (
-                                    <ListItem
-                                        selected={project === proj.name}
-                                        onClick={() => setProject(proj.name)}
-                                        button
-                                        key={proj.name}
-                                    >
-                                        <ListItemIcon className={classes.icon}>
-                                            <span role="img" aria-label="emoji">
-                                                {proj.icon}
-                                            </span>
-                                            {/* {index % 2 === 0 ? (
+                <Fragment>
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <AppBar position="fixed" className={classes.appBar}>
+                            <Toolbar style={{ height: 70 }}>
+                                <Typography variant="h6" noWrap>
+                                    Clipped drawer
+                                </Typography>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            className={classes.drawer}
+                            variant="permanent"
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            {/* <Toolbar /> */}
+                            <div className={classes.drawerContainer}>
+                                <List>
+                                    {data.map((proj, index) => (
+                                        <ListItem
+                                            selected={project === proj.name}
+                                            onClick={() =>
+                                                setProject(proj.name)
+                                            }
+                                            button
+                                            key={proj.name}
+                                        >
+                                            <ListItemIcon
+                                                className={classes.icon}
+                                            >
+                                                <span
+                                                    role="img"
+                                                    aria-label="emoji"
+                                                >
+                                                    {proj.icon}
+                                                </span>
+                                                {/* {index % 2 === 0 ? (
                                         <span role="img" aria-label="emoji">
                                             🏠
                                         </span>
@@ -451,80 +465,87 @@ function Dashboard(props) {
                                         </span>
                                         // <MailIcon />
                                     )} */}
+                                            </ListItemIcon>
+                                            <ListItemText primary={proj.name} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                <Divider />
+                                <List>
+                                    <ListItem
+                                        button
+                                        onClick={handleOpenAddClick}
+                                    >
+                                        <ListItemIcon>
+                                            <AddIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary={proj.name} />
+                                        <ListItemText primary="Add project" />
+                                        {/* {openAdd ? <ExpandLess /> : <ExpandMore />} */}
                                     </ListItem>
-                                ))}
-                            </List>
-                            <Divider />
-                            <List>
-                                <ListItem button onClick={handleOpenAddClick}>
-                                    <ListItemIcon>
-                                        <AddIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Add project" />
-                                    {/* {openAdd ? <ExpandLess /> : <ExpandMore />} */}
-                                </ListItem>
-                                <Dialog
-                                    disableBackdropClick
-                                    disableEscapeKeyDown
-                                    open={openAdd}
-                                    onClose={handleCloseAddClick}
-                                >
-                                    <DialogTitle
-                                        style={{
-                                            padding: "16px 24px 0",
-                                            textAlign: "center",
-                                        }}
+                                    <Dialog
+                                        disableBackdropClick
+                                        disableEscapeKeyDown
+                                        open={openAdd}
+                                        onClose={handleCloseAddClick}
                                     >
-                                        Add new project
-                                    </DialogTitle>
-                                    <DialogContent>
-                                        <form className={classes.container}>
-                                            <div className="name-input">
-                                                <TextField
-                                                    value={icon}
-                                                    id="icon-basic"
-                                                    label="Icon"
-                                                    onChange={(e) =>
-                                                        setIcon(e.target.value)
-                                                    }
-                                                    autoComplete="off"
-                                                />
-                                            </div>
-                                            <div className="icon-input">
-                                                <TextField
-                                                    value={name}
-                                                    id="name-basic"
-                                                    label="Name"
-                                                    onChange={(e) =>
-                                                        setName(e.target.value)
-                                                    }
-                                                    autoComplete="off"
-                                                />
-                                            </div>
-                                        </form>
-                                    </DialogContent>
-                                    <DialogActions
-                                        style={{ justifyContent: "center" }}
-                                    >
-                                        <Button
-                                            onClick={() =>
-                                                addProject(name, icon)
-                                            }
-                                            color="primary"
+                                        <DialogTitle
+                                            style={{
+                                                padding: "16px 24px 0",
+                                                textAlign: "center",
+                                            }}
                                         >
-                                            Ok
-                                        </Button>
-                                        <Button
-                                            onClick={handleCloseAddClick}
-                                            color="primary"
+                                            Add new project
+                                        </DialogTitle>
+                                        <DialogContent>
+                                            <form className={classes.container}>
+                                                <div className="name-input">
+                                                    <TextField
+                                                        value={icon}
+                                                        id="icon-basic"
+                                                        label="Icon"
+                                                        onChange={(e) =>
+                                                            setIcon(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        autoComplete="off"
+                                                    />
+                                                </div>
+                                                <div className="icon-input">
+                                                    <TextField
+                                                        value={name}
+                                                        id="name-basic"
+                                                        label="Name"
+                                                        onChange={(e) =>
+                                                            setName(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        autoComplete="off"
+                                                    />
+                                                </div>
+                                            </form>
+                                        </DialogContent>
+                                        <DialogActions
+                                            style={{ justifyContent: "center" }}
                                         >
-                                            Cancel
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
-                                {/* <Collapse in={openAdd} timeout="auto" unmountOnExit>
+                                            <Button
+                                                onClick={() =>
+                                                    addProject(name, icon)
+                                                }
+                                                color="primary"
+                                            >
+                                                Ok
+                                            </Button>
+                                            <Button
+                                                onClick={handleCloseAddClick}
+                                                color="primary"
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                    {/* <Collapse in={openAdd} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <ListItem button className={classes.nested}>
                                     <ListItemIcon>
@@ -534,48 +555,52 @@ function Dashboard(props) {
                                 </ListItem>
                             </List>
                         </Collapse> */}
-                                {project && (
-                                    <Fragment>
-                                        <ListItem
-                                            button
-                                            onClick={handleOpenManageClick}
-                                        >
-                                            <ListItemIcon>
-                                                <BugReportIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Manage project" />
-                                            {openManage ? (
-                                                <ExpandLess />
-                                            ) : (
-                                                <ExpandMore />
-                                            )}
-                                        </ListItem>
-                                        <Collapse
-                                            in={openManage}
-                                            timeout="auto"
-                                            unmountOnExit
-                                        >
-                                            <List
-                                                component="div"
-                                                disablePadding
+                                    {project && (
+                                        <Fragment>
+                                            <ListItem
+                                                button
+                                                onClick={handleOpenManageClick}
                                             >
-                                                <ListItem
-                                                    button
-                                                    className={classes.nested}
-                                                    onClick={() =>
-                                                        deleteProject(project)
-                                                    }
+                                                <ListItemIcon>
+                                                    <BugReportIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Manage project" />
+                                                {openManage ? (
+                                                    <ExpandLess />
+                                                ) : (
+                                                    <ExpandMore />
+                                                )}
+                                            </ListItem>
+                                            <Collapse
+                                                in={openManage}
+                                                timeout="auto"
+                                                unmountOnExit
+                                            >
+                                                <List
+                                                    component="div"
+                                                    disablePadding
                                                 >
-                                                    <ListItemIcon>
-                                                        <DeleteOutlineIcon />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Delete" />
-                                                </ListItem>
-                                            </List>
-                                        </Collapse>
-                                    </Fragment>
-                                )}
-                                {/* {["All mail", "Trash", "Spam"].map((text, index) => (
+                                                    <ListItem
+                                                        button
+                                                        className={
+                                                            classes.nested
+                                                        }
+                                                        onClick={() =>
+                                                            deleteProject(
+                                                                project
+                                                            )
+                                                        }
+                                                    >
+                                                        <ListItemIcon>
+                                                            <DeleteOutlineIcon />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary="Delete" />
+                                                    </ListItem>
+                                                </List>
+                                            </Collapse>
+                                        </Fragment>
+                                    )}
+                                    {/* {["All mail", "Trash", "Spam"].map((text, index) => (
                             <ListItem button key={text}>
                                 <ListItemIcon>
                                     {index % 2 === 0 ? (
@@ -587,36 +612,38 @@ function Dashboard(props) {
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))} */}
-                            </List>
-                        </div>
-                    </Drawer>
-                    <main className={classes.content}>
-                        {/* <Toolbar /> */}
-                        {project && (
-                            <div className="list">
-                                <div className="table">
-                                    <MaterialTable
-                                        icons={tableIcons}
-                                        isLoading={isTableLoading}
-                                        title={`Hi ${props.user.username}`}
-                                        columns={columns}
-                                        data={
-                                            data
-                                                ? data[findProjectIndex()].todos
-                                                : []
-                                        }
-                                        editable={{
-                                            onRowAdd: onMyRowAdd,
-                                            onRowUpdate: onMyRowUpdate,
-                                            onRowDelete: onMyRowDelete,
-                                        }}
-                                    />
-                                </div>
+                                </List>
                             </div>
-                        )}
-                    </main>
-                    <button onClick={logout}>Logout</button>
-                </div>
+                        </Drawer>
+                        <main className={classes.content}>
+                            {/* <Toolbar /> */}
+                            {project && (
+                                <div className="list">
+                                    <div className="table">
+                                        <MaterialTable
+                                            icons={tableIcons}
+                                            isLoading={isTableLoading}
+                                            title={`Hi ${props.user.username}`}
+                                            columns={columns}
+                                            data={
+                                                data
+                                                    ? data[findProjectIndex()]
+                                                          .todos
+                                                    : []
+                                            }
+                                            editable={{
+                                                onRowAdd: onMyRowAdd,
+                                                onRowUpdate: onMyRowUpdate,
+                                                onRowDelete: onMyRowDelete,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </main>
+                        <button onClick={logout}>Logout</button>
+                    </div>
+                </Fragment>
             )}
         </motion.div>
     );
