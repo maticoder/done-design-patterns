@@ -13,7 +13,7 @@ const projectSchema = new mongoose.Schema({
     },
     todos: [
         {
-            data: Date,
+            date: Date,
             time: Date,
             task: String,
         },

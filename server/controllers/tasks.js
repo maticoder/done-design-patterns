@@ -21,30 +21,113 @@ module.exports.addTodo = async (req, res) => {
             user: id,
         });
 
-        const project = data.projects.find((project) => project.name === name);
+        data.populate({
+            path: "projects",
+            match: { name },
+        }).execPopulate(async (err, result) => {
+            if (result.projects.length == 0) {
+                return res.status(400).json("Project does not exist");
+            } else {
+                const id = result.projects[0].id;
 
-        if (!project) {
-            return res.status(400).json("Project does not exist");
-        }
+                const project = await Project.findOne({
+                    _id: id,
+                });
+                project.todos.push({
+                    task,
+                    time,
+                    date,
+                });
+                project.save();
 
-        const index = data.projects.indexOf(project);
-        data.projects[index].todos.push({
-            task,
-            time,
-            date,
+                return res.status(200).json("Todo added");
+            }
         });
-        console.log(data.projects[index]);
-
-        Data.data.save();
-
-        return res.status(200).json("Todo added");
     } catch (err) {
         console.log(err);
         return res.status(500).json("Something went wrong");
     }
 };
-module.exports.editTodo = async (req, res) => {};
-module.exports.removeTodo = async (req, res) => {};
+
+module.exports.editTodo = async (req, res) => {
+    const { name, index, task, time, date } = req.body;
+
+    if (!name || !task || !index || !time || !date) {
+        return res.status(400).json("Invalid data");
+    }
+
+    const { id } = req.user;
+
+    try {
+        const data = await Data.findOne({
+            user: id,
+        });
+
+        data.populate({
+            path: "projects",
+            match: { name },
+        }).execPopulate(async (err, result) => {
+            if (result.projects.length == 0) {
+                return res.status(400).json("Project does not exist");
+            } else {
+                const id = result.projects[0].id;
+
+                const project = await Project.findOne({
+                    _id: id,
+                });
+                project.todos[index] = {
+                    task,
+                    time,
+                    date,
+                };
+                project.save();
+
+                return res.status(200).json("Todo updated");
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json("Something went wrong");
+    }
+};
+
+module.exports.removeTodo = async (req, res) => {
+    const { name, index } = req.body;
+
+    if (!name || !index) {
+        return res.status(400).json("Invalid data");
+    }
+
+    const { id } = req.user;
+
+    try {
+        const data = await Data.findOne({
+            user: id,
+        });
+
+        data.populate({
+            path: "projects",
+            match: { name },
+        }).execPopulate(async (err, result) => {
+            if (result.projects.length == 0) {
+                return res.status(400).json("Project does not exist");
+            } else {
+                const id = result.projects[0].id;
+
+                const project = await Project.findOne({
+                    _id: id,
+                });
+                project.todos.splice(index, 1);
+                project.save();
+
+                return res.status(200).json("Todo removed");
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json("Something went wrong");
+    }
+};
 
 module.exports.addProject = async (req, res) => {
     // get project icon and name
