@@ -1,13 +1,12 @@
 import React, { useState, useEffect, Fragment, forwardRef } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 // redux
 import { connect } from "react-redux";
 import { setUser, logoutUser } from "../../redux/actions/userActions";
 
 import { motion } from "framer-motion";
-
-import Navbar from "../../components/Navbar/Navbar";
 
 // loading component
 import Loading from "../../components/Loading/Loading";
@@ -64,6 +63,10 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
+import "./Dashboard.css";
+
+import { ReactComponent as Logo } from "../../images/logo_auth.svg";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -130,6 +133,11 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
+    },
+    myToolbar: {
+        height: 70,
+        display: "flex",
+        justifyContent: "space-between",
     },
 }));
 
@@ -267,8 +275,10 @@ function Dashboard(props) {
             axios
                 .put("http://192.168.1.221:7000/api/task/edit-todo", {
                     name: project,
-                    index: oldTodo.tableData.id,
-                    ...newTodo,
+                    index: oldTodo.tableData.id.toString(),
+                    task: newTodo.task,
+                    time: newTodo.time,
+                    date: newTodo.date,
                 })
                 .then((res) => {
                     resolve();
@@ -421,10 +431,24 @@ function Dashboard(props) {
                     <div className={classes.root}>
                         <CssBaseline />
                         <AppBar position="fixed" className={classes.appBar}>
-                            <Toolbar style={{ height: 70 }}>
-                                <Typography variant="h6" noWrap>
-                                    Clipped drawer
+                            <Toolbar className={classes.myToolbar}>
+                                <Typography variant="h5" noWrap>
+                                    <div
+                                        onClick={() => setProject(null)}
+                                        className="logo"
+                                    >
+                                        <Link to="/dashboard">
+                                            <Logo />
+                                            Done
+                                        </Link>
+                                    </div>
                                 </Typography>
+                                <div className="buttons">
+                                    <Button color="inherit">Profile</Button>
+                                    <Button onClick={logout} color="inherit">
+                                        Logout
+                                    </Button>
+                                </div>
                             </Toolbar>
                         </AppBar>
                         <Drawer
@@ -641,7 +665,6 @@ function Dashboard(props) {
                                 </div>
                             )}
                         </main>
-                        <button onClick={logout}>Logout</button>
                     </div>
                 </Fragment>
             )}

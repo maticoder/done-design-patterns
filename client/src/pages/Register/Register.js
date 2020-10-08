@@ -3,6 +3,10 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+// redux
+import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/userActions";
+
 import { motion } from "framer-motion";
 
 import { Link } from "react-router-dom";
@@ -18,7 +22,7 @@ import "./Register.css";
 // import animations
 import { container, itemOne, itemTwo } from "../../util/animation";
 
-function Register() {
+function Register(props) {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -49,7 +53,10 @@ function Register() {
             );
             setLoading(false);
             setErrors({});
-            // save token in state
+
+            // login user and redirect
+            props.loginUser(response.data);
+            props.history.push("/dashboard");
         } catch (err) {
             setLoading(false);
             setErrors(err.response.data);
@@ -218,4 +225,12 @@ function Register() {
     );
 }
 
-export default Register;
+const mapStateToProps = (state) => ({
+    user: state,
+});
+
+const mapActionsToProps = {
+    loginUser,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Register);
