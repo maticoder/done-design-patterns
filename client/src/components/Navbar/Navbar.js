@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// redux
+import { connect } from "react-redux";
+
 import { ReactComponent as Logo } from "../../images/logo.svg";
 
 import { motion } from "framer-motion";
@@ -12,7 +15,7 @@ import animationData from "./menu.json";
 // style import
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar(props) {
     const [active, setActive] = useState(false);
     const [animation, setAnimation] = useState(null);
     const [direction, setDirection] = useState(-1);
@@ -39,7 +42,11 @@ function Navbar() {
     return (
         <motion.header
             initial={{ y: -100 }}
-            animate={{ y: 1 }}
+            animate={
+                props.user.authenticated && !props.user.username
+                    ? { y: -100 }
+                    : { y: 0 }
+            }
             exit={{ y: -100 }}
             transition={{ duration: 1 }}
         >
@@ -87,4 +94,8 @@ function Navbar() {
     );
 }
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+    user: state,
+});
+
+export default connect(mapStateToProps)(Navbar);

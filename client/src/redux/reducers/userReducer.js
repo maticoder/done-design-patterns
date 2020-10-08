@@ -14,7 +14,10 @@ export default function (state = initialState, action) {
                 authenticated: true,
             };
         case SET_UNAUTHENTICATED:
-            return initialState;
+            return {
+                authenticated: false,
+                username: null,
+            };
         case SET_USER:
             return {
                 ...state,

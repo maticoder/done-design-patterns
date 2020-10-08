@@ -16,11 +16,11 @@ export const setUser = (username) => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-    localStorage.removeItem("myToken");
-    delete axios.defaults.headers.common["Authorization"];
     dispatch({
         type: SET_UNAUTHENTICATED,
     });
+    localStorage.removeItem("myToken");
+    delete axios.defaults.headers.common["Authorization"];
 };
 
 const setAuthorizationHeader = (token) => {
