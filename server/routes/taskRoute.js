@@ -16,7 +16,7 @@ router.get("/", auth, task);
 router.get("/todos", auth, getUserData);
 router.post("/add-todo", auth, addTodo);
 router.put("/edit-todo", auth, editTodo);
-router.delete("/remove-todo", auth, removeTodo);
+router.post("/remove-todo", auth, removeTodo);
 router.post("/add-project", auth, addProject);
 router.post("/remove-project", auth, removeProject);
 

@@ -204,6 +204,8 @@ module.exports.removeProject = async (req, res) => {
     // get project name
     const { name } = req.body;
 
+    console.log(name);
+
     if (!name) {
         return res.status(400).json("Invalid data");
     }
