@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const Data = require("../models/Data");
 const Project = require("../models/Project");
 
@@ -5,7 +6,31 @@ module.exports.task = (req, res) => {
     return res.json("Hi");
 };
 
-module.exports.getUserData = async (req, res) => {};
+module.exports.getUserData = async (req, res) => {
+    const { id } = req.user;
+
+    try {
+        const data = await Data.findOne({
+            user: id,
+        });
+
+        const user = await User.findOne({
+            _id: id,
+        });
+
+        data.populate({
+            path: "projects",
+        }).execPopulate(async (err, result) => {
+            return res.status(200).json({
+                user: user.username,
+                data: result,
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json("Something went wrong");
+    }
+};
 
 module.exports.addTodo = async (req, res) => {
     const { name, task, time, date } = req.body;

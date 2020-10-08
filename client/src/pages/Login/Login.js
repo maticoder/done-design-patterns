@@ -3,6 +3,10 @@ import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+// redux
+import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/userActions";
+
 import { motion } from "framer-motion";
 
 import { Link } from "react-router-dom";
@@ -33,7 +37,7 @@ const ColorButton = withStyles((theme) => ({
     },
 }))(Button);
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -59,10 +63,14 @@ function Login() {
             setLoading(false);
             setErrors({});
 
-            // save token and redirect
+            // login user and redirect
+            props.loginUser(response.data);
+            props.history.push("/dashboard");
         } catch (err) {
             setLoading(false);
-            setErrors(err.response.data);
+            if (err.response && err.response.data) {
+                setErrors(err.response.data);
+            }
         }
     };
 
@@ -182,4 +190,12 @@ function Login() {
     );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+    user: state,
+});
+
+const mapActionsToProps = {
+    loginUser,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Login);

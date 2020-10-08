@@ -13,7 +13,7 @@ const {
 const auth = require("../auth/auth");
 
 router.get("/", auth, task);
-router.get("/todos", getUserData);
+router.get("/todos", auth, getUserData);
 router.post("/add-todo", auth, addTodo);
 router.put("/edit-todo", auth, editTodo);
 router.delete("/remove-todo", auth, removeTodo);
