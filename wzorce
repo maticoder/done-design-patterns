@@ -1,0 +1,10 @@
+√ /server/util/Validate - Stratedy Design Pattern
+√ /client/src/pages/Login i Register - Observer Design Pattern
+√ /server/factory/Factory - Factory Design Pattern
+√ /server/singleton/Singleton i /server/controllers/users/signup - Singleton Design Pattern
+√ /server/iterator/Iterator - Iterator Design Pattern
+√ /server/prototype/Prototype i /server/controllers/users/signup - Prototype Design Pattern
+√ /server/chainOfResponsibility/chainOfResponsibility i /server/controllers/users/signup - Chain Of Responsibility Design Pattern
+√ /client/util/Builder i /client/src/Dashboard/handleOpenAddClick - Builder Design Pattern
+√ /server/util/validation - Facade Design Pattern
+√ /client/src/util/Command i /client/src/pages/Dashboard - Command Design Pattern

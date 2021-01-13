@@ -28,7 +28,7 @@
 
 .loading-text {
   font-weight: 200;
-  font-size: 2rem;
+  font-size: 1.6rem;
   -webkit-transform: translateY(120px);
           transform: translateY(120px);
   -webkit-animation: text-animation 2s infinite;

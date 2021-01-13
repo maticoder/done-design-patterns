@@ -68,6 +68,21 @@ import "./Dashboard.css";
 
 import { ReactComponent as Logo } from "../../images/logo_auth.svg";
 
+import ProjectDirector from "../../Builder/ProjectDirector";
+import {
+    ProjectBuilder,
+    CarProjectBuilder,
+    OfficeProjectBuilder,
+} from "../../Builder/Project";
+
+import {
+    AddTodoCommand,
+    EditTodoCommand,
+    RemoveTodoCommand,
+    Menu,
+    CommandControl,
+} from "../../util/Command/Command";
+
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -158,7 +173,23 @@ function Dashboard(props) {
     const [name, setName] = useState("");
     const [icon, setIcon] = useState("");
 
-    const handleOpenAddClick = () => setOpenAdd(true);
+    const handleOpenAddClick = () => {
+        let projectDirector = new ProjectDirector();
+        let carProjectBuilder = new CarProjectBuilder();
+        let officeProjectBuilder = new OfficeProjectBuilder();
+
+        projectDirector.setProjectBuilder(
+            Math.floor(Math.random() * 2)
+                ? carProjectBuilder
+                : officeProjectBuilder
+        );
+        projectDirector.constructProject();
+
+        let project = projectDirector.getProject();
+        setName(project.getName());
+        setIcon(project.getIcon());
+        setOpenAdd(true);
+    };
     const handleCloseAddClick = () => setOpenAdd(false);
     const handleOpenManageClick = () => setOpenManage(!openManage);
 
@@ -203,7 +234,7 @@ function Dashboard(props) {
 
         try {
             const response = await axios.get(
-                "http://192.168.1.221:7000/api/task/todos"
+                "http://192.168.0.185:7000/api/task/todos"
             );
             props.setUser(response.data.user);
             setUser(response.data.user);
@@ -212,141 +243,32 @@ function Dashboard(props) {
             // console.log(response);
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     };
 
-    // add new todo to the database
-    const onMyRowAdd = (newTodo) =>
-        new Promise(async (resolve) => {
-            newTodo.task =
-                newTodo.task && newTodo.task !== ""
-                    ? newTodo.task
-                    : "nothing? 😠";
-            newTodo.time =
-                newTodo.time && newTodo.time !== ""
-                    ? newTodo.time
-                    : new Date().toISOString();
-            newTodo.date =
-                newTodo.date && newTodo.date !== ""
-                    ? newTodo.date
-                    : new Date().toISOString();
+    const commandControl = new CommandControl();
 
-            axios
-                .post("http://192.168.1.221:7000/api/task/add-todo", {
-                    name: project,
-                    ...newTodo,
-                })
-                .then((res) => {
-                    resolve();
-                    setData((prevData) => {
-                        let newData = [];
-                        prevData.forEach((data) => {
-                            newData.push({
-                                name: data.name,
-                                icon: data.icon,
-                                todos: data.todos ? [...data.todos] : [],
-                            });
-                        });
-                        newData[findProjectIndex()].todos.push(newTodo);
-                        return newData;
-                    });
-                })
-                .catch((err) => {
-                    resolve();
-                    console.error(err);
-                });
-        });
+    const onMyRowAdd = (newTodo) => {
+        let menu = new Menu(project, data, setData, newTodo, null);
+        let command = new AddTodoCommand(menu);
+        commandControl.setCommand(command);
+        return commandControl.execute();
+    };
 
-    const onMyRowUpdate = (newTodo, oldTodo) =>
-        new Promise(async (resolve) => {
-            newTodo.task =
-                newTodo.task && newTodo.task !== ""
-                    ? newTodo.task
-                    : "nothing? 😠";
-            newTodo.time =
-                newTodo.time && newTodo.time !== ""
-                    ? newTodo.time
-                    : new Date().toISOString();
-            newTodo.date =
-                newTodo.date && newTodo.date !== ""
-                    ? newTodo.date
-                    : new Date().toISOString();
+    const onMyRowUpdate = (newTodo, oldTodo) => {
+        let menu = new Menu(project, data, setData, newTodo, oldTodo);
+        let command = new EditTodoCommand(menu);
+        commandControl.setCommand(command);
+        return commandControl.execute();
+    };
 
-            axios
-                .put("http://192.168.1.221:7000/api/task/edit-todo", {
-                    name: project,
-                    index: oldTodo.tableData.id.toString(),
-                    task: newTodo.task,
-                    time: newTodo.time,
-                    date: newTodo.date,
-                })
-                .then((res) => {
-                    resolve();
-                    if (oldTodo) {
-                        setData((prevData) => {
-                            let newData = [];
-                            prevData.forEach((data) => {
-                                newData.push({
-                                    name: data.name,
-                                    icon: data.icon,
-                                    todos: [...data.todos],
-                                });
-                            });
-                            let i = findProjectIndex();
-                            newData[i].todos[
-                                newData[i].todos.indexOf(oldTodo)
-                            ] = newTodo;
-                            return newData;
-                        });
-                        // setState((prevState) => {
-                        //     const data = [...prevState.data];
-                        //     data[data.indexOf(oldData)] = newData;
-                        //     return { ...prevState, data };
-                        // });
-                    }
-                })
-                .catch((err) => {
-                    resolve();
-                    console.error(err);
-                });
-        });
-
-    const onMyRowDelete = (oldTodo) =>
-        new Promise(async (resolve) => {
-            axios
-                .post("http://192.168.1.221:7000/api/task/remove-todo", {
-                    name: project,
-                    index: oldTodo.tableData.id.toString(),
-                })
-                .then((res) => {
-                    resolve();
-                    setData((prevData) => {
-                        let newData = [];
-                        prevData.forEach((data) => {
-                            newData.push({
-                                name: data.name,
-                                icon: data.icon,
-                                todos: [...data.todos],
-                            });
-                        });
-                        let i = findProjectIndex();
-                        newData[i].todos.splice(
-                            newData[i].todos.indexOf(oldTodo),
-                            1
-                        );
-                        return newData;
-                    });
-                    // setState((prevState) => {
-                    //     const data = [...prevState.data];
-                    //     data.splice(data.indexOf(oldData), 1);
-                    //     return { ...prevState, data };
-                    // });
-                })
-                .catch((err) => {
-                    resolve();
-                    console.error(err);
-                });
-        });
+    const onMyRowDelete = (oldTodo) => {
+        let menu = new Menu(project, data, setData, null, oldTodo);
+        let command = new RemoveTodoCommand(menu);
+        commandControl.setCommand(command);
+        return commandControl.execute();
+    };
 
     const findProjectIndex = () => {
         for (var i = 0; i < data.length; i++) {
@@ -361,7 +283,7 @@ function Dashboard(props) {
         setIsTableLoading(true);
         try {
             await axios.post(
-                "http://192.168.1.221:7000/api/task/add-project",
+                "http://192.168.0.185:7000/api/task/add-project",
                 {
                     name: project,
                     icon,
@@ -395,7 +317,7 @@ function Dashboard(props) {
         try {
             // const response =
             await axios.post(
-                "http://192.168.1.221:7000/api/task/remove-project",
+                "http://192.168.0.185:7000/api/task/remove-project",
                 {
                     name: project,
                 }
